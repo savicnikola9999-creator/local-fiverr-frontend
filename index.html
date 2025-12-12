@@ -6,11 +6,54 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>Lokalni Fiverr</h1>
-  <p id="status">Proveravam backend...</p>
+<h1>Rad od kuće</h1>
 
-  <button onclick="checkBackend()">Proveri backend</button>
+<p id="status">Backend status: proveri</p>
+<button onclick="checkBackend()">Proveri backend</button>
 
-  <script src="script.js"></script>
+<hr />
+
+<h2>Registracija</h2>
+
+<input id="email" type="email" placeholder="Email" />
+<br /><br />
+<input id="password" type="password" placeholder="Lozinka" />
+<br /><br />
+
+<button onclick="register()">Registruj se</button>
+
+<p id="result"></p>
+
+<script>
+  function checkBackend() {
+    fetch("https://local-fiverr-backend.onrender.com/")
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById("status").innerText = data;
+      });
+  }
+
+  function register() {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    fetch("https://local-fiverr-backend.onrender.com/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ email, password })
+    })
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById("result").innerText = data.message;
+      })
+      .catch(err => {
+        document.getElementById("result").innerText = "Greška na serveru";
+      });
+  }
+</script>
+
+  
 </body>
 </html>
